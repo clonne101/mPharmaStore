@@ -1,2 +1,3 @@
-# mPharmaStore
- An mPharma test
+# About
+
+An mPharma test store
