@@ -1,7 +1,6 @@
 import React, { Fragment, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
-import * as Yup from "yup";
 import { MinusIcon } from "@heroicons/react/outline";
 import ProductSchema from "./ProductSchema";
 

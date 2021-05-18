@@ -62,7 +62,7 @@ const EditProductModal = ({
                     as='h3'
                     className='text-lg leading-6 font-medium text-gray-900'
                   >
-                    Edit {product.name}
+                    Edit: <b>{product.name}</b>
                   </Dialog.Title>
                 </div>
                 <div className='hidden sm:block' aria-hidden='true'>

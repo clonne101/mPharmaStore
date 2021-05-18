@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import _ from "lodash";
 import EditProductModal from "./extensions/EditProductModal";
+import ViewPricesModal from "./extensions/ViewPricesModal";
 
 const GetLatestPrice = (prices, returnLatest = false) => {
   const price = _.orderBy(prices, ["date"], ["desc"]);
@@ -14,8 +15,10 @@ const Products = ({
   onActivation = () => {},
   editProduct = () => {},
 }) => {
-  const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [editableProduct, setEditableProduct] = useState({});
+  const [showPriceModal, setShowPriceModal] = useState(false);
+  const [priceProduct, setPriceProduct] = useState({});
 
   return (
     <>
@@ -89,7 +92,13 @@ const Products = ({
                               )}
                             </td>
                             <td className='px-6 py-4 whitespace-nowrap'>
-                              <button className='text-indigo-600 hover:text-indigo-900'>
+                              <button
+                                onClick={() => {
+                                  setPriceProduct(item);
+                                  setShowPriceModal(true);
+                                }}
+                                className='text-indigo-600 hover:text-indigo-900'
+                              >
                                 View Prices
                               </button>
                             </td>
@@ -113,7 +122,7 @@ const Products = ({
                               <button
                                 onClick={() => {
                                   setEditableProduct(item);
-                                  setShowModal(true);
+                                  setShowEditModal(true);
                                 }}
                                 className='text-indigo-600 hover:text-indigo-900'
                               >
@@ -133,10 +142,16 @@ const Products = ({
       </div>
       {/* Edit product modal */}
       <EditProductModal
-        show={showModal}
+        show={showEditModal}
         onSave={(data) => editProduct(data)}
-        onClose={() => setShowModal(false)}
+        onClose={() => setShowEditModal(false)}
         product={editableProduct}
+      />
+      {/* View product prices modal */}
+      <ViewPricesModal
+        show={showPriceModal}
+        onClose={() => setShowPriceModal(false)}
+        product={priceProduct}
       />
     </>
   );

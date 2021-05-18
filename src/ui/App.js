@@ -59,6 +59,7 @@ const App = () => {
 
         prices.map((value) => {
           if (newPrice === value.price) date = value.date;
+          return value;
         });
 
         return date;
@@ -81,8 +82,6 @@ const App = () => {
 
         return value;
       });
-
-      console.log(state.products);
     }),
     remove: action((state, id) => {
       const products = state.products;
@@ -166,7 +165,7 @@ const App = () => {
       _actions.setInitial(res.body.products);
     }
     fetchData();
-  }, []);
+  }, [_actions]);
 
   return (
     <>
