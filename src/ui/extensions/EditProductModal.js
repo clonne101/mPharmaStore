@@ -1,16 +1,27 @@
-import React, { Fragment, useRef } from "react";
+import React, { Fragment, useRef, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
-import * as Yup from "yup";
 import { MinusIcon } from "@heroicons/react/outline";
 import ProductSchema from "./ProductSchema";
+import _ from "lodash";
 
-const NewProductModal = ({
+const EditProductModal = ({
   show = false,
   onSave = () => {},
   onClose = () => {},
+  product = {},
 }) => {
   const cancelButtonRef = useRef(null);
+  const [initialValues, setInitialValues] = useState({});
+
+  useEffect(() => {
+    if (!_.isEmpty(product)) {
+      setInitialValues({
+        name: product.name,
+        prices: product.prices.map((value) => value.price),
+      });
+    }
+  }, [product]);
 
   return (
     <Transition.Root show={show} as={Fragment}>
@@ -51,7 +62,7 @@ const NewProductModal = ({
                     as='h3'
                     className='text-lg leading-6 font-medium text-gray-900'
                   >
-                    Add New Product
+                    Edit {product.name}
                   </Dialog.Title>
                 </div>
                 <div className='hidden sm:block' aria-hidden='true'>
@@ -61,13 +72,10 @@ const NewProductModal = ({
                 </div>
                 <div>
                   <Formik
-                    initialValues={{
-                      name: "",
-                      prices: [],
-                    }}
+                    initialValues={initialValues}
                     validationSchema={ProductSchema}
                     onSubmit={(values, actions) => {
-                      onSave(values);
+                      onSave({ id: product.id, data: values });
                       actions.setSubmitting(false);
                       actions.resetForm();
                       onClose();
@@ -206,4 +214,4 @@ const NewProductModal = ({
   );
 };
 
-export default NewProductModal;
+export default EditProductModal;

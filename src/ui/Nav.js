@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { PlusIcon } from "@heroicons/react/outline";
-
 import NewProductModal from "./extensions/NewProductModal";
 
 const Nav = ({ addProduct = () => {} }) => {
