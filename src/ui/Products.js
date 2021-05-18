@@ -7,10 +7,14 @@ const GetLatestPrice = (prices, returnLatest = false) => {
   return price;
 };
 
-const Products = ({ products = [] }) => {
+const Products = ({
+  items = [],
+  onDelete = () => {},
+  onActivation = () => {},
+}) => {
   return (
     <div className='container mx-auto mt-10 px-4'>
-      {products.length === 0 ? (
+      {items.length === 0 ? (
         <div className='font-medium text-gray-500 text-center'>Loading...</div>
       ) : (
         <div className='flex flex-col'>
@@ -36,6 +40,12 @@ const Products = ({ products = [] }) => {
                         scope='col'
                         className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
                       >
+                        Status
+                      </th>
+                      <th
+                        scope='col'
+                        className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                      >
                         Price History
                       </th>
                       <th
@@ -47,7 +57,7 @@ const Products = ({ products = [] }) => {
                     </tr>
                   </thead>
                   <tbody className='bg-white divide-y divide-gray-200'>
-                    {products.map((item, index) => {
+                    {items.map((item, index) => {
                       const latestPrice = GetLatestPrice(item.prices, true);
                       return (
                         <tr key={index}>
@@ -64,11 +74,34 @@ const Products = ({ products = [] }) => {
                             </div>
                           </td>
                           <td className='px-6 py-4 whitespace-nowrap'>
+                            {item.isActive ? (
+                              <div className='text-green-500'>Active</div>
+                            ) : (
+                              <div className='text-red-500'>Deleted</div>
+                            )}
+                          </td>
+                          <td className='px-6 py-4 whitespace-nowrap'>
                             <button className='text-indigo-600 hover:text-indigo-900'>
                               View Prices
                             </button>
                           </td>
                           <td className='px-6 py-4 whitespace-nowrap'>
+                            {item.isActive ? (
+                              <button
+                                onClick={() => onDelete(index)}
+                                className='text-red-600 hover:text-red-900'
+                              >
+                                Delete
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => onActivation(index)}
+                                className='text-green-600 hover:text-green-900'
+                              >
+                                Activate
+                              </button>
+                            )}
+                            {" | "}
                             <button className='text-indigo-600 hover:text-indigo-900'>
                               Edit
                             </button>

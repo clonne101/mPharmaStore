@@ -7,7 +7,8 @@ import superagent from "superagent";
 import Nav from "./Nav";
 import Products from "./Products";
 
-const noty = {
+// Alert box global schema
+const NotificationSchema = {
   closeOnClickOutside: true,
   closeOnEsc: true,
   title: "Alert",
@@ -18,13 +19,22 @@ const noty = {
 };
 
 const App = () => {
+  /**
+   * This manages the state and its corresponding actions,
+   * - adding products
+   * - removing products
+   * - parsing initial mock products
+   * - events attached to product actions
+   */
   const [_state, _actions] = useLocalStore(() => ({
     products: [],
     setInitial: action((state, data) => {
-      state.products = data;
+      state.products = data.map((value) => ({
+        ...value,
+        isActive: true,
+      }));
     }),
     add: action((state, product) => {
-      console.log(product);
       let newProduct = {};
 
       newProduct.id = state.products.length - 1;
@@ -39,18 +49,39 @@ const App = () => {
 
       state.products.push(newProduct);
     }),
-    remove: action((state, id = null) => {
-      if (id) {
-        state.products.splice(id, 1);
-      } else {
-        state.products = [];
-      }
+    remove: action((state, id) => {
+      const products = state.products;
+
+      state.products = products.map((value, index) => {
+        if (id === index) {
+          return {
+            ...value,
+            isActive: false,
+          };
+        }
+
+        return value;
+      });
+    }),
+    activate: action((state, id) => {
+      const products = state.products;
+
+      state.products = products.map((value, index) => {
+        if (id === index) {
+          return {
+            ...value,
+            isActive: true,
+          };
+        }
+
+        return value;
+      });
     }),
     onAdd: actionOn(
       (actions) => actions.add,
       (state, target) => {
         swal({
-          ...noty,
+          ...NotificationSchema,
           title: "Success",
           text: "Product added successfully",
           icon: "success",
@@ -61,10 +92,21 @@ const App = () => {
       (actions) => actions.remove,
       (state, target) => {
         swal({
-          ...noty,
+          ...NotificationSchema,
           title: "Removed",
           text: "Product removed successfully",
           icon: "error",
+        });
+      }
+    ),
+    onActivation: actionOn(
+      (actions) => actions.activate,
+      (state, target) => {
+        swal({
+          ...NotificationSchema,
+          title: "Activated",
+          text: "Product activated successfully",
+          icon: "success",
         });
       }
     ),
@@ -83,7 +125,11 @@ const App = () => {
   return (
     <>
       <Nav addProduct={(value) => _actions.add(value)} />
-      <Products products={_state.products} />
+      <Products
+        items={_state.products}
+        onDelete={(id) => _actions.remove(id)}
+        onActivation={(id) => _actions.activate(id)}
+      />
     </>
   );
 };
