@@ -6,11 +6,13 @@
     "@craco/craco": "^6.1.2",
     "@headlessui/react": "^1.2.0",
     "@heroicons/react": "^1.0.1",
+    "@tailwindcss/forms": "^0.3.2",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "autoprefixer": "^9.8.6",
     "easy-peasy": "^5.0.3",
+    "formik": "^2.2.6",
     "lodash": "^4.17.21",
     "postcss": "^7.0.35",
     "react": "^17.0.2",
@@ -19,7 +21,8 @@
     "superagent": "^6.1.0",
     "sweetalert": "^2.1.2",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.2",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^1.0.1",
+    "yup": "^0.32.9"
   },
   "scripts": {
     "start": "craco start",
